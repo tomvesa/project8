@@ -1,0 +1,139 @@
+* {
+  font-family: "Nunito", sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #c3c2c4;
+  background: linear-gradient(180deg, rgba(195, 194, 196, 0.85) 0%, rgba(225, 225, 233, 0.85) 35%, rgba(152, 156, 156, 0.624) 100%);
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 18px;
+  text-align: center;
+}
+
+main {
+  padding: 0 10px;
+  width: 100%;
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: 100%;
+}
+@media screen and (min-width: 768px) {
+  main {
+    grid-template-columns: repeat(2, minmax(250px, 1fr));
+  }
+}
+@media screen and (min-width: 1024px) {
+  main {
+    grid-template-columns: repeat(3, minmax(250px, 1fr));
+  }
+}
+
+header {
+  flex-basis: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+@media screen and (min-width: 768px) {
+  header {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}
+
+.card {
+  border: 1px solid #787a7a9f;
+  border-radius: 8px;
+  display: flex;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  white-space: wrap;
+  align-items: center;
+  padding: 15px 10px;
+  background: #fff;
+  box-shadow: 0 5px 8px -6px;
+}
+@media screen and (min-width: 768px) {
+  .card {
+    margin: 10px;
+  }
+}
+
+img {
+  border-radius: 50%;
+  height: 70px;
+  max-height: 150px;
+}
+@media screen and (min-width: 768px) {
+  img {
+    height: 90px;
+  }
+}
+
+p {
+  margin: 3px 0;
+}
+
+.text-container {
+  margin: 15px;
+  margin-right: 0;
+  flex-grow: 1;
+}
+
+.email {
+  word-break: break-all;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(100, 100, 100, 0.8);
+}
+
+.modal-container {
+  width: 290px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background: #fff;
+  border-radius: 5px;
+  border: 1px solid #787a7a9f;
+  box-shadow: 0 5px 8px -6px;
+  padding: 20px 10px;
+}
+
+.modal-close {
+  margin: 5px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  border: 1px solid #787a7a9f;
+  border-radius: 20%;
+}
+
+.hidden {
+  display: none;
+}
+
+.modal-container p {
+  margin: 15px 0;
+}
+
+/*# sourceMappingURL=style.css.map */

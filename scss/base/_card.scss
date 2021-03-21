@@ -1,0 +1,50 @@
+.card {
+    border: 1px solid #787a7a9f;
+    border-radius: 8px; 
+    display: flex;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    white-space: wrap;
+    //max-width: 400px;
+    align-items: center;
+    padding: 15px 10px;
+    // margin: 10px 0;
+    background: #fff;
+    box-shadow: 0 5px 8px -6px;
+    //flex-grow: 1;
+
+    
+    @media screen and (min-width: 768px){
+    
+        margin: 10px;
+        
+    }
+
+
+}
+
+img {
+    border-radius: 50%;
+    height: 70px;
+    max-height: 150px;
+
+    @media screen and (min-width: 768px){
+        height: 90px;
+        
+    }
+
+}
+
+p {
+    margin: 3px 0;
+}
+
+.text-container {
+    margin: 15px;
+    margin-right: 0;
+    flex-grow: 1;
+}
+
+.email {
+    word-break: break-all;
+}

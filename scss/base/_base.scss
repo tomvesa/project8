@@ -1,0 +1,44 @@
+*{
+  font-family: 'Nunito', sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  position: relative;
+  display: flex;
+  flex-direction: column;  
+  align-items: center;
+  background: rgb(195,194,196);
+  background: linear-gradient(180deg, rgba(195,194,196,.85) 0%, rgba(225,225,233,.85) 35%, rgba(152, 156, 156, 0.624) 100%);
+  min-height: 100vh;
+}
+
+h1{
+  font-size: 18px;
+  text-align: center;
+}
+
+main {
+  padding: 0 10px;
+  width: 100%;
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: 100%;
+   ;
+  
+
+
+  @media screen and (min-width: 768px){
+
+    
+    grid-template-columns: repeat(2, minmax(250px,1fr));    
+  }
+
+  @media screen and (min-width: 1024px){
+
+    
+    grid-template-columns: repeat(3, minmax(250px,1fr));    
+  }
+
+}
+

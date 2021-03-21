@@ -1,0 +1,41 @@
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(100,100,100, .8);
+        }
+
+.modal-container {
+    width: 290px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); //https://css-tricks.com/quick-css-trick-how-to-center-an-object-exactly-in-the-center/
+    text-align: center;
+    background: #fff;
+    border-radius: 5px;
+    border: 1px solid #787a7a9f;
+    box-shadow: 0 5px 8px -6px;
+    padding: 20px 10px;
+
+    
+}
+
+.modal-close{
+    margin: 5px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    border: 1px solid #787a7a9f;
+    border-radius: 20%;
+}
+
+.hidden {
+    display:none;
+}
+
+.modal-container p{
+    margin: 15px 0;
+}
