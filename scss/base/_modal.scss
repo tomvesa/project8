@@ -5,6 +5,7 @@
     right: 0;
     bottom: 0;
     background: rgba(100,100,100, .8);
+    pointer-events: none;
         }
 
 .modal-container {
@@ -19,6 +20,7 @@
     border: 1px solid #787a7a9f;
     box-shadow: 0 5px 8px -6px;
     padding: 20px 10px;
+    pointer-events: initial;
 
     
 }
