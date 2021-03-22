@@ -1,5 +1,5 @@
 //variables
-const employeesUrl = "https://randomuser.mepi/?resuts=12";
+const employeesUrl = "https://randomuser.me/api/?results=12";
 const main = document.querySelector('.grid-container');
 const searchBox = document.querySelector('#search-box');
 const modalClose = document.querySelector('.modal-close');
