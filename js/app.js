@@ -1,5 +1,5 @@
 //variables
-const employeesUrl = "https://randomuser.me/api/?results=12";
+const employeesUrl = "https://randomuser.mepi/?resuts=12";
 const main = document.querySelector('.grid-container');
 const searchBox = document.querySelector('#search-box');
 const modalClose = document.querySelector('.modal-close');
@@ -13,9 +13,8 @@ const ovlayDob = getClassElm('DoB');
 const ovlayState = getClassElm('modal-card .state');
 
 let employeesResponse;
-//let targetEmpoyee;
 let cardTemplate; 
-//let targetEmail;
+
 
 /* *************** helper functions   */
 async function getData(url){
@@ -26,18 +25,18 @@ async function getData(url){
                         cardTemplate = employeesResponse.map(employee => createCard(employee));
                         cardTemplate.forEach(element => main.appendChild(element));
 
-                        let cards = main.querySelectorAll('.card')
-                            cards.forEach(item => item.addEventListener('click', (event) => {
-                                  
-                                let targetEmail = item.querySelector('.email').innerHTML;
-                                
+                        // select all cards and add event listener to them to open modal window
+                        // to select correct info search by email address
+                        let cards = main.querySelectorAll('.card');
+                            cards.forEach(item => item.addEventListener('click', () => {                                  
+                                let targetEmail = item.querySelector('.email').innerHTML;                                
                                 let targetEmployee = employeesResponse.reduce((acc, item ) => {
                                     if(item.email === targetEmail){
                                         return item;
                                     }
                                     return acc;
                                 }, {});
-                                console.log(targetEmployee);
+                                //create elements for each information on the modal card
                                 ovlayAvatar.src = targetEmployee.picture.medium? targetEmployee.picture.medium : "img/universal-person-icon.png";
                                 ovlayName.innerHTML = `${targetEmployee.name.first} ${targetEmployee.name.last}`
                                 ovlayPhone.innerHTML = targetEmployee.phone? targetEmployee.phone : "";
@@ -47,14 +46,22 @@ async function getData(url){
                                 ovlayAddress.innerHTML = 
                                         `Address ${targetEmployee.location.street.name} ${targetEmployee.location.street.number},
                                         ${targetEmployee.location.city}, ${targetEmployee.location.country}`;
-
-
-
-                                overlay.classList.remove('hidden');
+                                //make the modal card visible
+                                //overlay.classList.remove('hidden');
+                                displayElement(overlay);
                                 })
                             
                         );
         })
+        .catch(error => {
+            console.log("there was a problem " + error)
+            main.innerHTML = `
+            <div class='error-message'>
+            <h1>OOOOHPSSS something is wrogng</h1>
+            <p>Please report to site admin</p>
+            </div>
+            `;
+        });
             
     }           
                 
@@ -99,25 +106,37 @@ async function getData(url){
           return longDate.toLocaleDateString();
       }
 
+      function hideElement(element){
+          element.classList.add('hidden');
+      }
+
+      function displayElement(element){
+          element.classList.remove('hidden');
+      }
+
+      function filterCardsByName() {
+        let names = [...document.querySelectorAll('.name')]; //select all names in the dom
+        let searchName = searchBox.value.toLowerCase();
+    
+        names.forEach(item => {
+            let nameToSmall = item.innerText.toLowerCase();
+            let card = item.parentElement.parentElement;
+            //compare searchbox value with names => display/hide accordingly
+            if (nameToSmall.indexOf(searchName) > -1) {
+                displayElement(card);
+            } else {
+                hideElement(card);
+            }
+        });
+    }
+
 //************code */
+
+//get data and create card grid
 getData(employeesUrl);
-modalClose.addEventListener('click', (e) => {
-                overlay.classList.add('hidden');
-});
+modalClose.addEventListener('click', () => hideElement(overlay) );
+
+//on every keypress check the input against names and hide not matching cards
+searchBox.addEventListener('keyup', filterCardsByName);
 
 
-searchBox.addEventListener('keyup', () => {
-    let names = [...document.querySelectorAll('.name')]; //select all names in the dom
-    let searchName = searchBox.value.toLowerCase();
-        
-    names.forEach(item => {
-        let nameToSmall = item.innerText.toLowerCase();
-        let card = item.parentElement.parentElement;
-        //compare searchbox value with names => display/hide accordingly
-        if(nameToSmall.indexOf(searchName) > -1){
-            card.classList.remove('hidden');            
-        } else{
-            card.classList.add('hidden');            
-        }
-    })
-});
