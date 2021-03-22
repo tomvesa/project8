@@ -1,6 +1,7 @@
 //variables
-const employeesUrl = "https://randomuser.me/api/?results=500";
+const employeesUrl = "https://randomuser.me/api/?results=12";
 const main = document.querySelector('.grid-container');
+const searchBox = document.querySelector('#search-box');
 const modalClose = document.querySelector('.modal-close');
 const overlay = document.querySelector('.overlay');
 const ovlayName = getClassElm('modal-card .name');
@@ -15,7 +16,6 @@ let employeesResponse;
 //let targetEmpoyee;
 let cardTemplate; 
 //let targetEmail;
-
 
 /* *************** helper functions   */
 async function getData(url){
@@ -103,4 +103,21 @@ async function getData(url){
 getData(employeesUrl);
 modalClose.addEventListener('click', (e) => {
                 overlay.classList.add('hidden');
-})
+});
+
+
+searchBox.addEventListener('keyup', () => {
+    let names = [...document.querySelectorAll('.name')]; //select all names in the dom
+    let searchName = searchBox.value.toLowerCase();
+        
+    names.forEach(item => {
+        let nameToSmall = item.innerText.toLowerCase();
+        let card = item.parentElement.parentElement;
+        //compare searchbox value with names => display/hide accordingly
+        if(nameToSmall.indexOf(searchName) > -1){
+            card.classList.remove('hidden');            
+        } else{
+            card.classList.add('hidden');            
+        }
+    })
+});
