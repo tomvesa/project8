@@ -11,9 +11,14 @@ header {
         max-width: 1200px;
         padding-left: 30px;
         padding-right: 30px;
+        margin-top: 30px;
 
 
         
+    }
+
+    @media screen and (min-width: 1024px) {
+        margin-top: 60px;
     }
 }
 
