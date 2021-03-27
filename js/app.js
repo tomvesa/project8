@@ -23,7 +23,10 @@ async function getData(url){
     return await fetch(url)
             .then(response => response.json())
             .then(json =>  {
+                        //move results into an array
                         employeesResponse = json.results;
+
+                        //create card for each item in the array and set index to a card
                         cardTemplate = employeesResponse.map(employee => createCard(employee));
                         cardTemplate.forEach((element, index) => {
                             //console.log(element);
@@ -31,15 +34,14 @@ async function getData(url){
                             main.appendChild(element);
                         });
 
-                        // select all cards and add event listener to them to open modal window
-                        // to select correct info search by email address
-                        let cards = [...main.querySelectorAll('.card')];
-                        
+
+                        // add a litener to all elements but main and modal to create a modal window 
+                        // for selected card
                         main.addEventListener('click', (e) => {
                                 let target = e.target;
                                 if(target !== main && target.classList.value.indexOf('modal') === -1 ){
                                 //console.log(target);
-                                let parentCard = target.closest('.card');
+                                let parentCard = target.closest('.card'); //closest method to select parent of target element
                                 let index = parentCard.attributes['data-index'].value;
                                     index = parseInt(index);
                                     //console.log(index);
@@ -47,7 +49,9 @@ async function getData(url){
                                 
                                 displayElement(overlay);
                                 }});
-
+                                
+                                //add Next functionality to a created modal card
+                                // get index of current card first
                                 btnNext.addEventListener('click', ()=>{
                                     const modalContainer = document.querySelector('.modal-container');
                                     let currentModalIndex =  getIndex(modalContainer);
@@ -55,7 +59,8 @@ async function getData(url){
                                     createModalCard(employeesResponse, currentModalIndex + 1);
 
                                 });
-
+                                 //add Previous functionality to a created modal card
+                                // get index of current card first
                                 btnPrevious.addEventListener('click', ()=>{
                                     const modalContainer = document.querySelector('.modal-container');
                                     let currentModalIndex =  getIndex(modalContainer);
@@ -81,17 +86,18 @@ async function getData(url){
         let container = document.querySelector('.modal-container');
         let employee = arr[index];
         container.setAttribute("data-index", index);
-        ovlayAvatar.src = employee.picture.medium ? employee.picture.medium : "img/universal-person-icon.png";
+        ovlayAvatar.src = employee.picture.medium ? employee.picture.medium : "img/universal-person-icon.png"; //if none show default
         ovlayName.innerHTML = `${employee.name.first} ${employee.name.last}`;
         ovlayPhone.innerHTML = employee.phone ? employee.phone : "";
         ovlayDob.innerHTML = 'Birthdate: ' + shortDate(employee.dob.date);
         ovlayEmail.innerHTML = employee.email;
-        ovlayState.innerHTML = employee.location.state ? employee.location.state : "";
+        ovlayState.innerHTML = employee.location.state ? employee.location.state : ""; //if none show empty
         ovlayAddress.innerHTML =
         `Address: ${employee.location.street.name} ${employee.location.street.number},
                                          ${employee.location.city}, ${employee.location.postcode}, ${employee.location.country}`;
          modalCard.classList.remove('hidden');  
-         
+        
+        // show / hide next/pref buttons based on current index 
         showHideNextBtn();
         showHidePreviousBtn();
 
