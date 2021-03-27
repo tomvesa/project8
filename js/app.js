@@ -4,6 +4,7 @@ const main = document.querySelector('.grid-container');
 const searchBox = document.querySelector('#search-box');
 const modalClose = document.querySelector('.modal-close');
 const overlay = document.querySelector('.overlay');
+const modalCard = getClassElm('modal-card');
 const ovlayName = getClassElm('modal-card .name');
 const ovlayPhone = getClassElm('phone');
 const ovlayEmail = getClassElm('modal-card .email');
@@ -11,7 +12,8 @@ const ovlayAvatar = getClassElm('modal-card .avatar');
 const ovlayAddress = getClassElm('address');
 const ovlayDob = getClassElm('DoB');
 const ovlayState = getClassElm('modal-card .state');
-
+const btnNext = getClassElm('next');
+const btnPrevious = getClassElm('previous');
 let employeesResponse;
 let cardTemplate; 
 
@@ -23,38 +25,49 @@ async function getData(url){
             .then(json =>  {
                         employeesResponse = json.results;
                         cardTemplate = employeesResponse.map(employee => createCard(employee));
-                        cardTemplate.forEach(element => main.appendChild(element));
+                        cardTemplate.forEach((element, index) => {
+                            //console.log(element);
+                            element.setAttribute("data-index", index);
+                            main.appendChild(element);
+                        });
 
                         // select all cards and add event listener to them to open modal window
                         // to select correct info search by email address
-                        let cards = main.querySelectorAll('.card');
-                            cards.forEach(item => item.addEventListener('click', () => {                                  
-                                let targetEmail = item.querySelector('.email').innerHTML;                                
-                                let targetEmployee = employeesResponse.reduce((acc, item ) => {
-                                    if(item.email === targetEmail){
-                                        return item;
-                                    }
-                                    return acc;
-                                }, {});
-                                //create elements for each information on the modal card
-                                ovlayAvatar.src = targetEmployee.picture.medium? targetEmployee.picture.medium : "img/universal-person-icon.png";
-                                ovlayName.innerHTML = `${targetEmployee.name.first} ${targetEmployee.name.last}`
-                                ovlayPhone.innerHTML = targetEmployee.phone? targetEmployee.phone : "";
-                                ovlayDob.innerHTML = 'Birthdate: ' + shortDate(targetEmployee.dob.date);
-                                ovlayEmail.innerHTML = targetEmail;
-                                ovlayState.innerHTML = targetEmployee.location.state? targetEmployee.location.state: "";
-                                ovlayAddress.innerHTML = 
-                                        `Address ${targetEmployee.location.street.name} ${targetEmployee.location.street.number},
-                                        ${targetEmployee.location.city}, ${targetEmployee.location.country}`;
-                                //make the modal card visible
-                                //overlay.classList.remove('hidden');
+                        let cards = [...main.querySelectorAll('.card')];
+                        
+                        main.addEventListener('click', (e) => {
+                                let target = e.target;
+                                if(target !== main && target.classList.value.indexOf('modal') === -1 ){
+                                //console.log(target);
+                                let parentCard = target.closest('.card');
+                                let index = parentCard.attributes['data-index'].value;
+                                    index = parseInt(index);
+                                    //console.log(index);
+                                createModalCard(employeesResponse, index);
+                                
                                 displayElement(overlay);
-                                })
-                            
-                        );
-        })
-        .catch(error => {
-            console.log("there was a problem " + error)
+                                }});
+
+                                btnNext.addEventListener('click', ()=>{
+                                    const modalContainer = document.querySelector('.modal-container');
+                                    let currentModalIndex =  getIndex(modalContainer);
+                                    //console.log(currentModalIndex);
+                                    createModalCard(employeesResponse, currentModalIndex + 1);
+
+                                });
+
+                                btnPrevious.addEventListener('click', ()=>{
+                                    const modalContainer = document.querySelector('.modal-container');
+                                    let currentModalIndex =  getIndex(modalContainer);
+                                    //console.log(currentModalIndex);
+                                    createModalCard(employeesResponse, currentModalIndex -1);
+
+                                });
+                            })
+
+     
+            .catch(error => {
+            console.log("there was a problem " + error);
             main.innerHTML = `
             <div class='error-message'>
             <h1>OOOOHPSSS something is wrogng</h1>
@@ -63,15 +76,53 @@ async function getData(url){
             `;
         });
             
+
+    function createModalCard(arr,index) {
+        let container = document.querySelector('.modal-container');
+        let employee = arr[index];
+        container.setAttribute("data-index", index);
+        ovlayAvatar.src = employee.picture.medium ? employee.picture.medium : "img/universal-person-icon.png";
+        ovlayName.innerHTML = `${employee.name.first} ${employee.name.last}`;
+        ovlayPhone.innerHTML = employee.phone ? employee.phone : "";
+        ovlayDob.innerHTML = 'Birthdate: ' + shortDate(employee.dob.date);
+        ovlayEmail.innerHTML = employee.email;
+        ovlayState.innerHTML = employee.location.state ? employee.location.state : "";
+        ovlayAddress.innerHTML =
+        `Address: ${employee.location.street.name} ${employee.location.street.number},
+                                         ${employee.location.city}, ${employee.location.postcode}, ${employee.location.country}`;
+         modalCard.classList.remove('hidden');  
+         
+        showHideNextBtn();
+        showHidePreviousBtn();
+
+
+         // ****************helper functions
+                    function showHidePreviousBtn() {
+                        if (index === 0) {
+                            btnPrevious.classList.add('hidden');
+                        } else {
+                            btnPrevious.classList.remove('hidden');
+                        }
+                    }
+
+                    function showHideNextBtn() {
+                        if (index + 1 === arr.length) {
+                            btnNext.classList.add('hidden');
+                        } else {
+                            btnNext.classList.remove('hidden');
+                        }
+                    }
+         //********************************************** */           
+                }
     }           
                 
        function createCard(item){
-           let card = createNewItem('div', 'card');
-           let avatar = createNewItem('img','avatar');
-           let textBox = createNewItem('div', 'text-container' );
-                let name = createNewItem('h4', 'name');
-                let email = createNewItem('p', 'email');
-                let state = createNewItem('p', 'state');
+           let card = createNewItem('div', ['card']);
+           let avatar = createNewItem('img',['avatar']);
+           let textBox = createNewItem('div', ['text-container'] );
+                let name = createNewItem('h4', ['name']);
+                let email = createNewItem('p', ['email']);
+                let state = createNewItem('p', ['state']);
     
                 
                 avatar.src = item.picture.large;
@@ -93,8 +144,8 @@ async function getData(url){
 
       function createNewItem(elementType, className){
           let item = document.createElement(elementType);
-          item.classList.add(className);
-          return item
+          item.classList.add(...className);
+          return item;
       }
     
       function getClassElm(className){
@@ -129,6 +180,15 @@ async function getData(url){
             }
         });
     }
+
+    //get index of an element
+    function getIndex(element){
+        let index = element.attributes['data-index'].value;
+        return parseInt(index);
+    }
+
+
+
 
 //************code */
 
