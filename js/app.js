@@ -197,6 +197,9 @@ getData(employeesUrl);
 modalClose.addEventListener('click', () => hideElement(overlay) );
 
 //on every keypress check the input against names and hide not matching cards
-searchBox.addEventListener('keyup', filterCardsByName);
+searchBox.addEventListener('keyup', () => {
+    overlay.classList.add('hidden'); //hide overlay when searching
+    filterCardsByName();
+});
 
 
