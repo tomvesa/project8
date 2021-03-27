@@ -41,3 +41,23 @@
 .modal-container p{
     margin: 15px 0;
 }
+
+.next, .previous{
+    height: 30px;
+    position: absolute;
+    opacity: .5;
+    cursor: pointer; 
+} 
+
+.next {
+    top: 30%;
+    right: 0;
+    margin-right: 5px;
+}
+
+.previous{
+    top: 30%;
+    left: 0px;
+    transform:  scaleX(-1);
+    margin-left: 5px;
+}
