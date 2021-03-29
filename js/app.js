@@ -103,6 +103,7 @@ async function getData(url){
 
 
          // ****************helper functions
+                    // hide arrow when at the start of the list
                     function showHidePreviousBtn() {
                         if (index === 0) {
                             btnPrevious.classList.add('hidden');
@@ -110,7 +111,7 @@ async function getData(url){
                             btnPrevious.classList.remove('hidden');
                         }
                     }
-
+                    // hide arrow when at the end of the list
                     function showHideNextBtn() {
                         if (index + 1 === arr.length) {
                             btnNext.classList.add('hidden');
